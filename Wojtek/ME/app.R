@@ -23,6 +23,7 @@ ui <- dashboardPage(
       id = "tabs",
       menuItem("Wojtek1", tabName = "dashboard1", icon = icon("dashboard")),
       menuItem("Wojtek2", tabName = "dashboard2", icon = icon("dashboard")),
+      menuItem("Sen", tabName = "dashboard3", icon=icon("dashboard")),
       menuItem("About", icon = icon("info-circle"), tabName = "about", badgeLabel = "new",
                badgeColor = "green")
     )
@@ -103,6 +104,37 @@ ui <- dashboardPage(
                 )
               )
       ),
+      tabItem("dashboard3",
+              fluidRow(
+                height =20,
+                column(width = 12,
+                       box(title = "Plot",
+                           solidHeader = TRUE,
+                           collapsible = TRUE,
+                           width = 12,
+                           plotOutput(outputId="czas_snu", height = 600)
+                       )
+                )
+              ),
+              fluidRow(
+                column(width = 6,
+                       box(title = "Plot",
+                           solidHeader = TRUE,
+                           collapsible = TRUE,
+                           width = 12,
+                           plotOutput(outputId="sen_Ola_plt")
+                       )
+                ),
+                column(width = 6,
+                       box(title = "Plot",
+                           solidHeader = TRUE,
+                           collapsible = TRUE,
+                           width = 12,
+                           plotOutput(outputId="sen_Gosia_plt")
+                       )
+                )
+              )
+      ),
       #################################
       tabItem("about",
               "About the app"
@@ -140,6 +172,18 @@ server <- function(input, output) {
   
   output[["day_sleep_violin"]] <- renderPlot(
     day_sleep_violin
+  )
+  
+  output[["czas_snu"]] <- renderPlot(
+    czas_snu
+  )
+  
+  output[["sen_Ola_plt"]] <- renderPlot(
+    sen_Ola_plt
+  )
+  
+  output[["sen_Gosia_plt"]] <- renderPlot(
+    sen_Gosia_plt
   )
   
 }
