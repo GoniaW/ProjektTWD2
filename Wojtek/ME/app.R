@@ -8,7 +8,7 @@ ui <- dashboardPage(
   
   skin = "black",
   ###############################
-  dashboardHeader(title = "Me, my, mine"),
+  dashboardHeader(title = "Projekt JA"),
   #################################
   dashboardSidebar(
     sidebarUserPanel(Sys.info()[["effective_user"]],
@@ -28,7 +28,22 @@ ui <- dashboardPage(
   ###########################
   dashboardBody(
     tabItems(
+      
       tabItem("dashboard1",
+              fluidRow(
+                height =20,
+                column(width = 12,
+                       box(title = "Piesze wycieczki",
+                           solidHeader = TRUE,
+                           width = 12,
+                           HTML(
+                             paste(
+                               p("Poniższe wykresy opisują piesze wycieczki Wojtka. Dane pochodzą z przełomu grudnia 2018 roku i stycznia 2019 roku.")
+                             )
+                           )
+                       )
+                )
+              ),
               fluidRow(
                 height =20,
                 column(width = 6,
@@ -72,6 +87,20 @@ ui <- dashboardPage(
       ),
       ##################################
       tabItem("dashboard2",
+              fluidRow(
+                height =20,
+                column(width = 12,
+                       box(title = "Piesze wycieczki",
+                           solidHeader = TRUE,
+                           width = 12,
+                           HTML(
+                             paste(
+                               p("Poniższe wykresy opisują zależność długości marszu od snu Wojtka. Dane pochodzą z przełomu grudnia 2018 roku i stycznia 2019 roku.")
+                             )
+                           )
+                       )
+                )
+              ),
               fluidRow(
                 column(width = 12,
                        box(title = "Kroki, sen a dzień",
