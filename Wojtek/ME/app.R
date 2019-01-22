@@ -74,7 +74,7 @@ ui <- dashboardPage(
       tabItem("dashboard2",
               fluidRow(
                 column(width = 12,
-                       box(title = "Plot",
+                       box(title = "Kroki, sen a dzień",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
@@ -84,7 +84,7 @@ ui <- dashboardPage(
               ),
               fluidRow(
                 column(width = 6,
-                       box(title = "Plot",
+                       box(title = "Kroki",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
@@ -92,7 +92,7 @@ ui <- dashboardPage(
                        )
                 ),
                 column(width = 6,
-                       box(title = "Plot",
+                       box(title = "Sen",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
