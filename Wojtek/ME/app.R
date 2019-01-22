@@ -135,25 +135,46 @@ ui <- dashboardPage(
               fluidRow(
                 height =20,
                 column(width = 12,
-                       box(title = "Plot",
+                       box(title = "Sen",
                            solidHeader = TRUE,
-                           collapsible = TRUE,
                            width = 12,
-                           plotOutput(outputId="czas_snu", height = 600)
+                           HTML(
+                             paste(
+                               p("Przedstawione w tej zakładce wykresy dotyczą statystyki długości naszego snu w ciągu ostatniego miesiąca.")
+                             )
+                           )
                        )
                 )
               ),
               fluidRow(
-                column(width = 6,
-                       box(title = "Plot",
+                height =20,
+                column(width = 12,
+                       box(title = "Długość snu",
+                           solidHeader = TRUE,
+                           collapsible = TRUE,
+                           width = 12,
+                           HTML(
+                             paste(
+                               p("Wykres przedstawia dane od 13 grudnia do 7 stycznia. 
+                                 Można zaobserwować dużą nieregularność długości snu, różnice między poszczególnymi osobami, a także szczególną datę 31 grudnia.")
+                             )
+                           ),
+                           plotOutput(outputId="czas_snu_plt", height = 600)
+                       )
+                )
+              ),
+              fluidRow(
+                column(width = 12,
+                       box(title = "Ola",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
                            plotOutput(outputId="sen_Ola_plt")
                        )
-                ),
-                column(width = 6,
-                       box(title = "Plot",
+                )),
+              fluidRow(
+                column(width = 12,
+                       box(title = "Gosia",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
@@ -263,17 +284,65 @@ server <- function(input, output) {
   output[["day_sleep_violin"]] <- renderPlot(
     day_sleep_violin
   )
+
+  sen_Wojtek <- c(8,7,6,8,6,6,7,7,8,10,10,8,9,10,8,4,9,9,0,9,7,10,10,9,8,8)
   
-  output[["czas_snu"]] <- renderPlot(
-    czas_snu
+  sen_Gosia_start <- c(23.5,24,24,23,23,23.5,23,23.5,1.5,24,23.5,24,0.5,24,24,23.5,24,3,2,23,23.5,23.5,23.5,23.5,24,23)
+  sen_Gosia_koniec <- c(7.5,7,8,7,7,7,7,7,7,8,9,8.5,10,9,8.5,9.5,9,8,3.5,8,7,7,8,8,8,7)
+  sen_Gosia <- (sen_Gosia_koniec - sen_Gosia_start) %% 24
+  
+  sen_Ola_start <- c(2,2,7,2,1,2,24,4,23,2,3,2,3,3,4,3,2,3,4.5,3,2.5,2.5,4,2,3.5,24)
+  sen_Ola_koniec <- c(7,10,12,11,10,9,8,8,11,10,9,10,11,10,10,10,10,12,14,9,8,9,12,9,9,10)
+  sen_Ola <- (sen_Ola_koniec-sen_Ola_start) %% 24
+  
+  daty <- rep(seq(as.Date("2018-12-13"), by=1, len=26),3)
+  sen <- data.frame(daty,c(sen_Wojtek, sen_Gosia, sen_Ola),c(rep("Wojtek",26),rep("Gosia",26),rep("Ola",26)))
+  colnames(sen) <- c("data", "czas", "osoba")
+  
+  output[["czas_snu_plt"]] <- renderPlot(
+    ggplot() + 
+      geom_line(data=sen, aes(x=data,y=czas, col=osoba), size=1) + geom_point(data=sen, aes(x=data,y=czas, col=osoba), size=2) +
+      labs (title = 'Długość snu w zależności od daty', x='Data', y='Długość snu') +
+      scale_y_continuous(breaks=seq(0,12,2), labels=seq(0,12,2), limits = c(0,12)) +
+      theme(plot.title = element_text(hjust = 0.5, size=20),
+            axis.title.x = element_text(size=12),
+            axis.title.y = element_text(size=12),
+            axis.text = element_text(size=10))
   )
+  
+  sen2 <- data.frame(seq( as.Date("2018-12-13"), by=1, len=26), sen_Ola, sen_Ola_start, sen_Ola_koniec)
+  colnames(sen2) <- c('date', 'czas', 'start', 'end')
+  sen2$day <- weekdays(strptime(sen2$date, "%Y-%m-%d"))
+  sen2$ymin <- seq(from=1, length.out = 26, by=1.2)
+  t <- table(sen2$day)
+  sen2$start <- (sen2$start + 4 ) %% 24
+  sen2$end <- (sen2$end + 4 ) %% 24
   
   output[["sen_Ola_plt"]] <- renderPlot(
-    sen_Ola_plt
+    ggplot(sen2, aes(xmin = start, xmax = end, ymin = ymin, ymax = ymin + 1)) + geom_rect() +
+      xlab("Pora dnia (godzina)") + scale_x_continuous(breaks=seq(0,24,1),labels=(seq(0,24,1)-4) %% 24, limits = c(3,18)) +
+      scale_y_continuous(breaks=sen2$ymin[seq(1,26,2)], labels=sen2$date[seq(1,26,2)]) + labs(title="Wykres snu w ciągu dnia") +
+      theme(plot.title = element_text(hjust = 0.5, size=20),
+            axis.title.x = element_text(size=12),
+            axis.text = element_text(size=10))
   )
   
+  sen3 <- data.frame(seq( as.Date("2018-12-13"), by=1, len=26), sen_Gosia, sen_Gosia_start, sen_Gosia_koniec)
+  colnames(sen3) <- c('date', 'czas', 'start', 'end')
+  sen3$day <- weekdays(strptime(sen3$date, "%Y-%m-%d"))
+  sen3$ymin <- seq(from=1, length.out = 26, by=1.2)
+  t <- table(sen3$day)
+  sen3$start <- (sen3$start + 4 ) %% 24
+  sen3$end <- (sen3$end + 4 ) %% 24
+  
+  
   output[["sen_Gosia_plt"]] <- renderPlot(
-    sen_Gosia_plt
+    ggplot(sen3, aes(xmin = start, xmax = end, ymin = ymin, ymax = ymin + 1)) + geom_rect() +
+      xlab("Pora dnia (godzina)") + scale_x_continuous(breaks=seq(0,24,1),labels=(seq(0,24,1)-4) %% 24, limits = c(3,18)) +
+      scale_y_continuous(breaks=sen3$ymin[seq(1,26,2)], labels=sen3$date[seq(1,26,2)]) + labs(title="Wykres snu w ciągu dnia") +
+      theme(plot.title = element_text(hjust = 0.5, size=20),
+            axis.title.x = element_text(size=12),
+            axis.text = element_text(size=10))
   )
   
   output[["napoje"]] <- renderggiraph({
