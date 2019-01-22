@@ -17,8 +17,8 @@ ui <- dashboardPage(
     sidebarMenu(
       # Setting id makes input$tabs give the tabName of currently-selected tab
       id = "tabs",
-      menuItem("Wojtek1", tabName = "dashboard1", icon = icon("dashboard")),
-      menuItem("Wojtek2", tabName = "dashboard2", icon = icon("dashboard")),
+      menuItem("Kroki", tabName = "dashboard1", icon = icon("dashboard")),
+      menuItem("Kroki a sen", tabName = "dashboard2", icon = icon("dashboard")),
       menuItem("Sen", tabName = "dashboard3", icon=icon("dashboard")),
       menuItem("Napoje", tabName = "dashboard4", icon = icon("dashboard")),
       menuItem("About", icon = icon("info-circle"), tabName = "about", badgeLabel = "new",
@@ -32,7 +32,7 @@ ui <- dashboardPage(
               fluidRow(
                 height =20,
                 column(width = 6,
-                       box(title = "Plot",
+                       box(title = "Ile kroków dziennie?",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
@@ -41,7 +41,7 @@ ui <- dashboardPage(
                 ),
                 
                 column(width = 6,
-                       box(title = "Plot",
+                       box(title = "Jak duże są moje kroki?",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
@@ -51,7 +51,7 @@ ui <- dashboardPage(
               ),
               fluidRow(
                 column(width = 12,
-                       box(title = "Plot",
+                       box(title = "Piesze wycieczki",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
@@ -61,7 +61,7 @@ ui <- dashboardPage(
               ),
               fluidRow(
                 column(width = 12,
-                       box(title = "Plot",
+                       box(title = "Piesze wycieczki - długość kroku",
                            solidHeader = TRUE,
                            collapsible = TRUE,
                            width = 12,
