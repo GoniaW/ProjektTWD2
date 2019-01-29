@@ -21,8 +21,7 @@ ui <- dashboardPage(
       menuItem("Kroki a sen", tabName = "dashboard2", icon = icon("dashboard")),
       menuItem("Sen", tabName = "dashboard3", icon=icon("dashboard")),
       menuItem("Napoje", tabName = "dashboard4", icon = icon("dashboard")),
-      menuItem("About", icon = icon("info-circle"), tabName = "about", badgeLabel = "new",
-               badgeColor = "green")
+      menuItem("O aplikacji", icon = icon("info-circle"), tabName = "about")
     )
   ),
   ###########################

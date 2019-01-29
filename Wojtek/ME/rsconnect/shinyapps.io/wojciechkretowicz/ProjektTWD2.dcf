@@ -4,9 +4,9 @@ username:
 account: wojciechkretowicz
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 659595
-bundleId: 1829936
+appId: 673221
+bundleId: 1843516
 url: https://wojciechkretowicz.shinyapps.io/ProjektTWD2/
-when: 1548187902.85067
+when: 1548767837.47576
 asMultiple: FALSE
 asStatic: FALSE
